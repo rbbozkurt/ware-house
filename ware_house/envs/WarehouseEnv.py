@@ -51,29 +51,31 @@ class WarehouseEnv(gym.Env):
             "agent": agent_list_space,
             "shelf": shelf_list_space,
             "goal": goal_list_space
-        });
+        })
 
         self.action_space = spaces.MultiDiscrete([len(Action) for i in range(self.n_agents)])
 
     def _get_obs(self):
-        return {
+        obs = spaces.Dict({
             "agent":
-                {
-                    i: {"location": np.array([agent.y, agent.x]),
-                        "direction": agent.cur_dir.value}
+                spaces.Dict({
+                    i: spaces.Dict({"location": np.array([agent.y, agent.x]),
+                                    "direction": agent.cur_dir.value})
                     for i, agent in enumerate(self.warehouse.agent_dict.values())
-                },
+                }),
             "shelf":
-                {
-                    i: {"location": np.array([shelf.y, shelf.x])}
+                spaces.Dict({
+                    i: spaces.Dict({"location": np.array([shelf.y, shelf.x])})
                     for i, shelf in enumerate(self.warehouse.shelf_dict.values())
-                },
+                }),
             "goal":
-                {
-                    i: {"location": np.array([goal.y, goal.x])}
+                spaces.Dict({
+                    i: spaces.Dict({"location": np.array([goal.y, goal.x])})
                     for i, goal in enumerate(self.warehouse.goal_dict.values())
-                }
-        }
+                })
+        })
+        print(type(obs))
+        return obs
 
     def _get_info(self):
         return {
@@ -154,7 +156,7 @@ class WarehouseEnv(gym.Env):
                 location = np.array([shelf.y, shelf.x])
                 pygame.draw.circle(
                     canvas,
-                    (255,97,3),
+                    (255, 97, 3),
                     (location + 0.5) * pix_square_size,
                     pix_square_size / 4,
                 )
