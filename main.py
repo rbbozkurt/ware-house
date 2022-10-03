@@ -30,7 +30,7 @@ def test_gym(environment):
 
 def train(environment):
     log_path = os.path.join('Training', 'Logs')
-    model = A2C("MultiInputPolicy", environment, verbose=1)
+    model = PPO("MultiInputPolicy", environment, verbose=1)
     model.learn(total_timesteps=400000)
     model.save('a2c-rware')
     evaluate_policy(model, environment, n_eval_episodes=10, render=True)
@@ -39,7 +39,7 @@ def train(environment):
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     env = gym.make("rware-v4")
-    # test_gym(env)
-    train(env)
+    test_gym(env)
+    #train(env)
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
