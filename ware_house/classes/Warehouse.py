@@ -320,7 +320,7 @@ class Warehouse:
                     agent.load(shelf)
                     agent.score += 2
                     agent.min_dis = 0
-                    print('Agent ', agent.id, 'picked up the shelf ', shelf.id)
+                    #print('Agent ', agent.id, 'picked up the shelf ', shelf.id)
                 else:
                     # print('Invalid action ', des_action, 'for agent ', agent.id)
                     pass
@@ -332,7 +332,7 @@ class Warehouse:
                     agent.score += 1
                     self.shelf_dict.pop(shelf.id)
                     agent.min_dis = 999
-                    print('Agent ', agent.id, 'left the shelf ', shelf.id)
+                    #print('Agent ', agent.id, 'left the shelf ', shelf.id)
                 else:
                     # print('Invalid action ', des_action, 'for agent ', agent.id)
                     pass

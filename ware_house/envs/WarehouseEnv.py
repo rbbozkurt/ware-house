@@ -52,8 +52,16 @@ class WarehouseEnv(gym.Env):
             "shelf": shelf_list_space,
             "goal": goal_list_space
         })
-
         self.action_space = spaces.MultiDiscrete([len(Action) for i in range(self.n_agents)])
+        self.flatten_spaces()
+
+    def flatten_spaces(self):
+
+        attr_matrix = np.zeros((3, max(self.n_shelves, self.n_agents), 3))
+        attr_matrix[:, :, :] = self.width
+        attr_matrix[:, :, 2:3] = len(Direction)
+        flatten_space = spaces.MultiDiscrete(attr_matrix)
+        self.observation_space = flatten_space
 
     def _get_obs(self):
         obs = {
@@ -109,8 +117,8 @@ class WarehouseEnv(gym.Env):
             done = True
         observation = self._get_obs()
         info = self._get_info()
-        if self.render_mode == "human":
-            self._render_frame()
+        #  if self.render_mode == "human":
+        #       self._render_frame()
         return observation, self.reward, done, info
 
     def render(self, **kwargs):
@@ -169,7 +177,6 @@ class WarehouseEnv(gym.Env):
                     (location + 0.5) * pix_square_size,
                     pix_square_size / 4,
                 )
-            print(f"Agent position is {agent.y} . {agent.x} and direction {agent.cur_dir}")
 
             if agent.cur_dir == Direction.UP:
                 agent_dir_start = np.array([agent.x + 0.5, agent.y + 0.25]) * pix_square_size
